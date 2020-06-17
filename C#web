@@ -1,0 +1,122 @@
+private void lvDesk_Click(object sender, EventArgs e)
+{
+string names = lvDesk.SelectedItems[0].SubItems[0].Text;
+SqlConnection conn =DBHelper.getconn();
+conn.Open();
+SqlCommand cmd = new SqlCommand("select * from room where roomname='" + names + "'", conn);
+SqlDataReader sdr = cmd.ExecuteReader();
+sdr.Read();
+string zt = sdr["roomzt"].ToString().Trim();
+sdr.Close();
+if (zt == "使用")
+{
+this.youjian.Items[0].Enabled = false;
+this.youjian.Items[1].Enabled = true;
+this.youjian.Items[3].Enabled = true;
+this.youjian.Items[5].Enabled = true;
+this.youjian.Items[6].Enabled = true;
+}
+if (zt == "待用")
+{
+this.youjian.Items[0].Enabled = true;
+this.youjian.Items[1].Enabled = false;
+this.youjian.Items[3].Enabled = false;
+this.youjian.Items[5].Enabled = false;
+this.youjian.Items[6].Enabled = false;
+}
+conn.Close();
+}
+private void Main_Activated(object sender, EventArgs e)
+{
+lvDesk.Items.Clear();
+SqlConnection conn = DBHelper.getconn();
+conn.Open();
+SqlCommand cmd = new SqlCommand("select * from room", conn);
+sdr = cmd.ExecuteReader();
+while (sdr.Read())
+{
+string zt = sdr["roomzt"].ToString().Trim();
+AddItems(zt);
+}
+conn.Close();
+}
+private void 开台ToolStripMenuItem_Click(object sender, EventArgs e)
+{
+if (lvDesk.SelectedItems.Count != 0)
+{
+string names = lvDesk.SelectedItems[0].SubItems[0].Text;
+kaitai openroom = new kaitai();
+openroom.name = names;
+openroom.ShowDialog();
+}
+else
+{
+MessageBox.Show("请选择桌台");
+}
+}
+private void 取消开台ToolStripMenuItem_Click(object sender, EventArgs e)
+{
+if (lvDesk.SelectedItems.Count != 0)
+{
+SqlConnection conn = DBHelper.getconn();
+conn.Open();
+string names = lvDesk.SelectedItems[0].SubItems[0].Text;
+SqlCommand cmd = new SqlCommand("Select * from guestfood where roomname='" + names + "'", conn);
+int i = Convert.ToInt32(cmd.ExecuteScalar());
+if (i > 0)
+{
+MessageBox.Show("请先结帐!!");
+}
+else
+{
+cmd = new SqlCommand("update room set roomzt='待用' where roomname='" + names + "'", conn);
+cmd.ExecuteNonQuery();
+cmd = new SqlCommand("delete from guestfood where roomname='" + names + "'", conn);
+cmd.ExecuteNonQuery();
+conn.Close();
+Main_Activated(sender, e);
+}
+}
+}
+private void 点加菜ToolStripMenuItem_Click(object sender, EventArgs e)
+{
+if (lvDesk.SelectedItems.Count != 0)
+{
+string names = lvDesk.SelectedItems[0].SubItems[0].Text;
+FrmDC dc = new FrmDC();
+dc.RName = names;
+dc.ShowDialog();
+}
+else
+{
+MessageBox.Show("请选择桌台");
+}
+}
+private void 消费查询ToolStripMenuItem_Click(object sender, EventArgs e)
+{
+if (lvDesk.SelectedItems.Count != 0)
+{
+string names = lvDesk.SelectedItems[0].SubItems[0].Text;
+payselect serch = new payselect();
+serch.RName = names;
+serch.ShowDialog();
+}
+else
+{
+MessageBox.Show("请选择桌台");
+}
+}
+private void 结账ToolStripMenuItem_Click(object sender, EventArgs e)
+{
+if (lvDesk.SelectedItems.Count != 0)
+{
+string names = lvDesk.SelectedItems[0].SubItems[0].Text;
+jiezhang jz = new jiezhang();
+jz.Rname = names;
+jz.ShowDialog();
+}
+else
+{
+MessageBox.Show("请选择桌台");
+}
+}
