@@ -1,0 +1,53 @@
+package com.jiemian.wuziqi;
+
+
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * 五子棋窗口
+ */
+public class Frame extends JFrame {
+    public static void main(String[] args){
+            //设置窗口
+            JFrame jm = new JFrame();
+            jm.setTitle("五子棋");
+            jm.setSize(700,600);
+            jm.setDefaultCloseOperation(3);
+            jm.setLocationRelativeTo(null);
+
+            //设置背景颜色
+            JPanel jp=new JPanel();
+            jp.setBackground(new Color(245,245,245));
+            jm.add(jp,BorderLayout.EAST);
+
+            //设置左边布局
+            FlowLayout fl=new FlowLayout(5,5,60);
+            jp.setLayout(fl);
+            Dimension di=new Dimension(120,0);
+            jp.setPreferredSize(di);
+
+            //设置按钮
+            JButton jbu1=new javax.swing.JButton("开始游戏");
+            Dimension di1=new Dimension(100,60);
+            jbu1.setPreferredSize(di1);
+            jp.add(jbu1);
+
+            JButton jbu2=new javax.swing.JButton("人机对战");
+            Dimension di2=new Dimension(100,60);
+            jbu2.setPreferredSize(di2);
+            jp.add(jbu2);
+
+            JButton jbu3=new javax.swing.JButton("悔棋");
+            Dimension di3=new Dimension(100,60);
+            jbu3.setPreferredSize(di3);
+            jp.add(jbu3);
+
+            JButton jbu4=new javax.swing.JButton("重新开始");
+            Dimension di4=new Dimension(100,60);
+            jbu4.setPreferredSize(di4);
+            jp.add(jbu4);
+
+            jm.setVisible(true);
+    }
+}
